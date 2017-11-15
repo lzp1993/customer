@@ -1,7 +1,10 @@
 package org.lzp.service;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.lzp.helper.DatabaseHelper;
 import org.lzp.model.Customer;
 import org.lzp.util.PropsUtil;
 import org.slf4j.Logger;
@@ -31,7 +34,13 @@ public class CustomerService {
 
     public List<Customer>getCustomerList(String keyword)
     {
-        return null;
+        Connection conn= DatabaseHelper.getConnection();
+        try {
+            String sql="select*from customer";
+            return DatabaseHelper.queryEntityList(Customer.class,conn,sql);
+        }finally {
+            DatabaseHelper.closeConnection(conn);
+        }
     }
     public Customer getCustomer(long id)
     {
